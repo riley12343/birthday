@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Birthday 🎀</title>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #ffd6e8, #fff1f7);
+      color: #444;
+      text-align: center;
+      overflow-x: hidden;
+    }
+
+    header {
+      padding: 80px 20px 40px;
+    }
+
+    h1 {
+      font-family: 'Pacifico', cursive;
+      font-size: 3.2rem;
+      color: #ff5fa2;
+      margin-bottom: 10px;
+    }
+
+    h2 {
+      font-weight: 400;
+      font-size: 1.2rem;
+      color: #666;
+    }
+
+    .card {
+      background: white;
+      margin: 40px auto;
+      max-width: 650px;
+      padding: 40px 30px;
+      border-radius: 25px;
+      box-shadow: 0 20px 40px rgba(255, 95, 162, 0.2);
+    }
+
+    .card h3 {
+      color: #ff5fa2;
+      font-size: 1.6rem;
+      margin-bottom: 15px;
+    }
+
+    .card p {
+      font-size: 1rem;
+      line-height: 1.7;
+    }
+
+    .hearts {
+      font-size: 1.8rem;
+      margin: 20px 0;
+    }
+
+    .button {
+      display: inline-block;
+      margin-top: 25px;
+      padding: 12px 28px;
+      background: #ff5fa2;
+      color: white;
+      text-decoration: none;
+      border-radius: 30px;
+      font-weight: 600;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(255, 95, 162, 0.4);
+    }
+
+    footer {
+      padding: 30px 20px 50px;
+      font-size: 0.9rem;
+      color: #888;
+    }
+
+    .floating {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .floating span {
+      position: absolute;
+      bottom: -50px;
+      font-size: 20px;
+      animation: floatUp 10s linear infinite;
+      opacity: 0.7;
+    }
+
+    @keyframes floatUp {
+      from {
+        transform: translateY(0);
+        opacity: 0.8;
+      }
+      to {
+        transform: translateY(-120vh);
+        opacity: 0;
+      }
+    }
+  
+    .cake-area { display:flex; flex-direction:column; align-items:center; gap:8px; }
+    .cake { font-size:5rem; }
+    .candles span { font-size:2rem; margin:0 6px; transition: opacity .5s, filter .5s; }
+    .candles .off { opacity:0.3; filter: grayscale(1); }
+    .candy { font-size:2.2rem; transition: transform .8s ease, opacity .8s ease; }
+    .wish { display:none; margin-top:14px; color:#ff5fa2; font-weight:600; }
+    .confetti { position:fixed; inset:0; pointer-events:none; }
+    .confetti i { position:absolute; top:-10px; font-style:normal; animation: fall 2.5s linear infinite; }
+    @keyframes fall { to { transform: translateY(110vh) rotate(360deg);} }
+  </style>
+</head>
+<body>
+
+  <div class="floating">
+    <span style="left: 10%; animation-delay: 0s;">💖</span>
+    <span style="left: 30%; animation-delay: 2s;">🎀</span>
+    <span style="left: 50%; animation-delay: 4s;">✨</span>
+    <span style="left: 70%; animation-delay: 1s;">💗</span>
+    <span style="left: 85%; animation-delay: 3s;">🎉</span>
+  </div>
+
+  <header>
+    <h1>Happy Birthday!</h1>
+    <h2>Today is all about you 🌸</h2>
+  </header>
+
+  <section class="card">
+    <h3>Make a Wish 🎂</h3>
+
+    <div class="cake-area">
+      <div class="candy" id="candy">🍬</div>
+
+      <div class="candles">
+        <span>🕯️</span>
+        <span>🕯️</span>
+        <span>🕯️</span>
+      </div>
+
+      <div class="cake">🎂</div>
+    </div>
+
+    <p style="margin-top: 20px;">
+      Take a deep breath, make a wish, and blow the candy 🍬
+    </p>
+
+    <button class="button" onclick="blowCandy()">Blow 🎐</button>
+  </section>
+
+  <script>
+    let blown = false;
+    function blowCandy() {
+      if (blown) return;
+      blown = true;
+      const candy = document.getElementById('candy');
+      candy.style.transform = 'translateY(-140px) scale(1.6)';
+      candy.style.opacity = '0';
+
+      // turn off candles one by one
+      const candles = document.querySelectorAll('.candles span');
+      candles.forEach((c, i) => setTimeout(() => c.classList.add('off'), 500 + i*400));
+
+      // confetti
+      makeConfetti();
+
+      // wish text
+      document.getElementById('wish').style.display = 'block';
+
+      // music
+      const audio = document.getElementById('music');
+      audio.volume = 0.6;
+      audio.play().catch(()=>{});
+    }
+
+    function makeConfetti() {
+      const wrap = document.createElement('div');
+      wrap.className = 'confetti';
+      const bits = ['✨','🎉','💖','🎀','🌸'];
+      for (let i=0;i<40;i++){
+        const b = document.createElement('i');
+        b.textContent = bits[Math.floor(Math.random()*bits.length)];
+        b.style.left = Math.random()*100 + 'vw';
+        b.style.animationDelay = Math.random()*1.5 + 's';
+        b.style.fontSize = (14 + Math.random()*18) + 'px';
+        wrap.appendChild(b);
+      }
+      document.body.appendChild(wrap);
+      setTimeout(()=>wrap.remove(), 3000);
+    }
+  </script>
+
+  
+
+  <footer>
+    Made with lots of love 💗<br>
+    Happy Birthday, always.
+  </footer>
+
+</body>
+</html>
